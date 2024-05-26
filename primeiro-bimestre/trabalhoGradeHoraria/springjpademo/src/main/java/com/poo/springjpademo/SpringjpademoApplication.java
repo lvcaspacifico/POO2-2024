@@ -33,7 +33,8 @@ public class SpringjpademoApplication {
 								  PeriodoRepository periodoRepository,
 								  ProfessorRepository professorRepository,
 								  SalaRepository salaRepository,
-								  TurmaRepository turmaRepository){
+								  TurmaRepository turmaRepository,
+								  CursoRepository cursoRepository){
 
 		return (args) -> {
 			log.info("-------------- SALVANDO DIAS DA SEMANA --------------");
@@ -50,14 +51,14 @@ public class SpringjpademoApplication {
 			}
 
 			log.info("-------------- SALVANDO PROFESSORES --------------");
-			professorRepository.save(new Professor("Leanderson Andre"));
-			professorRepository.save(new Professor("Diana dos Santos"));
-			professorRepository.save(new Professor("Marcelo Pereira"));
-			professorRepository.save(new Professor("Leila Techio"));
-			professorRepository.save(new Professor("Vanessa Camargo"));
+			professorRepository.save(new Professor("Leanderson Andre", "leanderson.andre@univille.br"));
+			professorRepository.save(new Professor("Diana dos Santos", "diana.dos.santos@univille.br"));
+			professorRepository.save(new Professor("Marcelo Pereira", "marcelo.pereira@univille.br"));
+			professorRepository.save(new Professor("Leila Techio", "leila.techio@univille.br"));
+			professorRepository.save(new Professor("Vanessa Camargo", "vanessa.camargo@univille.br"));
 			log.info("Inserts concluídos.");
 
-  qeeqeqweead     			log.info("-------------- [findAll] LISTAR PROFESSORES --------------");
+ 			log.info("-------------- [findAll] LISTAR PROFESSORES --------------");
 			for(var linha : professorRepository.findAll()){
 				log.info(linha.getNome());
 			}
@@ -79,8 +80,13 @@ public class SpringjpademoApplication {
 					log.info("ID: " + linha.getId() + " | NOME DISC.: " + linha.getNome() + " | PROFESSOR: " + linha.getProfessor().getNome());
 				}
 
+			log.info("-------------- SALVANDO CURSOS --------------");
+			var curso01 = cursoRepository.save(new Curso("Bacharelado em Engenharia de Software"));
+			var curso02 = cursoRepository.save(new Curso("Bacharelado em Sistemas de Informação"));
+			log.info("Inserts concluídos.");
+
 			log.info("-------------- SALVANDO TURMAS --------------");
-			turmaRepository.save(new Turma("4º Semestre"));
+			turmaRepository.save(new Turma("4º Semestre","AN144-1", curso01));
 			log.info("Inserts concluídos.");
 			log.info("-------------- [findAll] LISTAR TURMAS --------------");
 			for(var linha : turmaRepository.findAll()){
@@ -144,32 +150,32 @@ public class SpringjpademoApplication {
 			for (Horario horario : horarios) {
 				log.info(horario.toString());
 			}
-			log.info("-------------- SALVANDO GRADE DE HORARIOS 01 --------------");
+			log.info("-------------- SALVANDO HORARIOS 01 e 02 --------------");
 			var horario01 = horarioRepository.findById(1L);
 			var horario02 = horarioRepository.findById(2L);
 
 			log.info("Variável horario01 = " + horario01);
 			log.info("Variável horario02 = " + horario02);
-
 			log.info("Inserts concluídos.");
+			log.info("-------------- SALVANDO GRADE DE HORARIOS 01 --------------");
 			gradeHorariaRepository.save(new GradeHoraria(horario01.get(), horario02.get()));
-			log.info("-------------- [findAll] + Formatação | LISTAR GRADE DE HORARIOS --------------");
-			for(var linha : gradeHorariaRepository.findAll()){
-				log.info("//////// GRADE HORARIA DE "+ linha.getPrimeiroHorario().getData() + " ////////");
-				log.info("======== Horario: 01 ========");
-				log.info("TURMA: " + linha.getPrimeiroHorario().getTurma().getSemestre());
-				log.info("DIA DA SEMANA: " + linha.getPrimeiroHorario().getDiaDaSemana().getNome());
-				log.info("PERÍODO: " + linha.getPrimeiroHorario().getPeriodo().getDescricao());
-				log.info("DISCIPLINA: " + linha.getPrimeiroHorario().getDisciplina().getNome());
-				log.info("PROFESSOR: " + linha.getPrimeiroHorario().getProfessor().getNome());
-				log.info("SALA: " + linha.getPrimeiroHorario().getSala().getCodigoDaSala());
-				log.info("======== Horario: 02 ========");
-				log.info("TURMA: " + linha.getSegundoHorario().getTurma().getSemestre());
-				log.info("DIA DA SEMANA: " + linha.getSegundoHorario().getDiaDaSemana().getNome());
-				log.info("PERÍODO: " + linha.getSegundoHorario().getPeriodo().getDescricao());
-				log.info("DISCIPLINA: " + linha.getSegundoHorario().getDisciplina().getNome());
-				log.info("PROFESSOR: " + linha.getSegundoHorario().getProfessor().getNome());
-				log.info("SALA: " + linha.getSegundoHorario().getSala().getCodigoDaSala());
+			log.info("Inserts concluídos.");
+
+			log.info("-------------- [findAll] + Formatação | LISTAR GRADE DE HORARIOS EM GERAL--------------");
+			for (var linha : gradeHorariaRepository.findAll()) {
+				linha.printarGradeHoraria(log);
+			}
+			log.info("-------------- [findAllByPrimeiroHorarioData] + Formatação | LISTAR GRADE DE HORARIOS DE x DATA--------------");
+			String dataDesejada = "21/04/2024";
+			List<GradeHoraria> gradesPorData = gradeHorariaRepository.findAllByPrimeiroHorarioData(dataDesejada);
+			for (var grade : gradesPorData) {
+				grade.printarGradeHoraria(log);
+			}
+			log.info("-------------- [findAll] + Formatação | LISTAR GRADE DE HORARIOS POR CURSO --------------");
+			String cursoDesejado = "Bacharelado em Engenharia de Software";
+			List<GradeHoraria> gradesPorCurso = gradeHorariaRepository.findAllByPrimeiroHorarioTurmaCursoNome(cursoDesejado);
+			for (var grade : gradesPorCurso) {
+				grade.printarGradeHoraria(log);
 			}
 		;};
 	}

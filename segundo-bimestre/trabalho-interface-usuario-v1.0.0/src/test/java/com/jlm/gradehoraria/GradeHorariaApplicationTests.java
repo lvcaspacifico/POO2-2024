@@ -1,10 +1,10 @@
-package com.leandersonandre.agenda;
+package com.lvcaspacifico.gradehoraria;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AgendaApplicationTests {
+class GradeHorariaApplicationTests {
 
 	@Test
 	void contextLoads() {

@@ -20,7 +20,9 @@ public class Professor {
     private long id;
 
     private String nome;
-    public Professor(String nome){
+    private String email;
+    public Professor(String nome, String email){
         this.nome = nome;
+        this.email = email;
     }
 }

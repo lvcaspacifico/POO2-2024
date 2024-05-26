@@ -1,9 +1,6 @@
 package com.poo.springjpademo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,7 +17,14 @@ public class Turma {
     private long id;
 
     private String semestre;
-    public Turma(String semestre){
+
+    private String codTurma;
+
+    @ManyToOne
+    private Curso curso;
+    public Turma(String semestre, String codTurma, Curso curso){
         this.semestre = semestre;
+        this.codTurma = codTurma;
+        this.curso = curso;
     }
 }

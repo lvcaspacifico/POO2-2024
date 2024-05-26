@@ -1,4 +1,4 @@
-package com.leandersonandre.agenda.controllers;
+package com.lvcaspacifico.gradehoraria.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
