@@ -1,4 +1,4 @@
-package com.lvcaspacifico.gradehoraria;
+package com.jlm.gradehoraria;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
